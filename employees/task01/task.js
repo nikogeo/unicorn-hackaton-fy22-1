@@ -20,6 +20,13 @@
    * slouzi na overeni vstupu, jestli ma definovane datove typy, vlastnosti a definovane rozsahy
    * 
    * @param {dtoIn} vstupni hodnoty k validaci
+   * {
+    "count": vetsi nez nula, mensi nez 10000,
+    "age": {
+      "min": nejmene 18,
+      "max": nejvic 70
+    }
+  }
    * @return {bool} true, false
   **/
   function validate(dtoIn){
@@ -34,6 +41,17 @@
    function getRandomWorkload(){
   
   }
+
+   /**
+   * slouzi k vytvoreni zakladu osoby
+   * 
+   * @return {Person} 
+  **/
+  function getRandomPerson()
+  {
+
+  }
+
 
    /**
    * vrati birthdate podle definovaneho veku
@@ -68,10 +86,23 @@ function main(dtoIn={}) {
   }
 
   
+  dtoIn = {
+    count: 50,
+    age: {
+      min: 18, 
+      max: 55
+    }
+  };
+  
 
   //vytvoreni seznamu osob (iterace podle count)
+  for(var i = 0; i < dtoIn.count; i++){
+    let person = getRandomPerson();
+    let personWithDetails = new Person(dtoIn.age.min, dtoIn.age.max, persons.gender)
+  }
 
-
+  //getRandomPerson a pak construktor te tridy
+  
 
 
   //zapsani seznamu osob
@@ -83,21 +114,22 @@ function main(dtoIn={}) {
 //@@viewOff:main
 
 class Person {
-  constructor(ageMin, ageMax, gender, name, surname) {
-    
-    // pohlaví, hodnota "male" nebo "female"
-    this.gender = gender;
-
-    // jméno
-    this.name = name;
-
-    // příjmení
-    this.surname = surname;
-
+  generateDetails(ageMin, ageMax) {  
     // pracovní úvazek - číslo 10, 20, 30 nebo 40
     this.workload = getRandomWorkload();
 
     // datum narození ve formátu ISO Date-Time YYYY-MM-DDTHH:MM:SSZ (např. 1981-10-28T23:00:00.000Z)
     this.birthdate = getRandomBirthdate(ageMin, ageMax);
+  }
+
+  constructor(gender, name, surname){
+  // pohlaví, hodnota "male" nebo "female"
+  this.gender = gender;
+
+  // jméno
+  this.name = name;
+
+  // příjmení
+  this.surname = surname;
   }
 }
