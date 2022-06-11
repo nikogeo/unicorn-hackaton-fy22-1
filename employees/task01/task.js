@@ -131,6 +131,8 @@ const LIST_LENGTH = 12;
 **/
 function main(dtoIn={}) {
 
+//test zmena
+
   console.log('start');
   //validace vstupu
   if(!validate(dtoIn))
