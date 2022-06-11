@@ -110,7 +110,6 @@ function validate(dtoIn) {
   } else (dtoIn[(age, max)] > 70) {
     throw "Maximální věk není platný (více než 70let)";
   }
-  return true;
 }
 
 /**
