@@ -1,4 +1,9 @@
 //@@viewOff:const
+const FEMALE_NAMES = ['Marie', 'Jana', 'Anna', 'Eva', 'Jaroslava', 'Alena', 'Věra', 'Lucie', 'Lenka', 'Kateřina', 'Petra', 'Zdeňka', 'Jitka'];
+const FEMALE_SURNAMES = ['Černá', 'Nováková', 'Svobodová', 'Nová', 'Benešová', 'Soukupová', 'Králová', 'Fialová', 'Kučerová', 'Mašková', 'Dvořáková', 'Procházková', 'Lišková'];
+const MALE_NAMES = ['Jan', 'Václav', 'Jiří', 'Josef', 'Petr', 'Pavel', 'Jaroslav', 'Martin', 'Tomáš', 'Miroslav', 'Karel', 'František', 'Zdeněk'];
+const MALE_SURNAMES = ['Černý', 'Novák', 'Svoboda', 'Nový', 'Beneš', 'Soukup', 'Mašek', 'Král', 'Fiala', 'Kučera', 'Dvořák', 'Procházka', 'Liška'];
+const LIST_LENGTH = 12;
 //@@viewOff:const
 
 //@@viewOn:helpers
@@ -15,7 +20,6 @@
     return Math.floor(Math.random() * (max - min + 1)) + min;
   } 
 
-
   /**
    * slouzi na overeni vstupu, jestli ma definovane datove typy, vlastnosti a definovane rozsahy
    * 
@@ -30,7 +34,7 @@
    * @return {bool} true, false
   **/
   function validate(dtoIn){
-
+    return true;
   }
 
   /**
@@ -39,7 +43,11 @@
    * @return {int} 10, 20, 30 nebo 40
   **/
    function getRandomWorkload(){
-  
+    const workloads = [10, 20, 30, 40];
+
+    const random = Math.floor(Math.random() * workloads.length);
+    console.log(random, workloads[random]);
+    return workloads[random];
   }
 
    /**
@@ -49,7 +57,44 @@
   **/
   function getRandomPerson()
   {
+    let randomPerson;
+      if(identifyMaleFemale()){
+          return new Person("male", getRandomName(true), getRandomSurname(true));
+      }
+      else
+      {
+        return new Person("female", getRandomName(false), getRandomSurname(false));
+      }
+  }
 
+
+  function getRandomName(isMale){
+    let randomNumber = getRandom(0,LIST_LENGTH);
+    if(isMale)
+    {
+      return MALE_NAMES[randomNumber];
+    }
+    else
+    {
+      return FEMALE_NAMES[randomNumber];
+    }
+  }
+
+  function getRandomSurname(isMale){
+    let randomNumber = getRandom(0,LIST_LENGTH);
+    if(isMale)
+    {
+      return MALE_SURNAMES[randomNumber];
+    }
+    else
+    {
+      return FEMALE_SURNAMES[randomNumber];
+    }
+  }
+
+  function identifyMaleFemale()
+  {
+    return Math.random() < 0.5;
   }
 
 
@@ -59,9 +104,16 @@
    * @param {number} ageMax max value
    * @return {text} datum ve formátu ISO Date-Time YYYY-MM-DDTHH:MM:SSZ (např. 1981-10-28T23:00:00.000Z)
   **/
-  function getRandomBirthdate(ageMin, ageMax){
-
-  }
+    function getRandomBirthdate(ageMin, ageMax) {
+      var endDate = new Date();
+      endDate.setFullYear( endDate.getFullYear() - ageMin);
+  
+      var startDate = new Date();
+      startDate.setFullYear( startDate.getFullYear() - ageMax);
+  
+      var selectedDate = new Date(startDate.getTime() + Math.random() * (endDate.getTime() - endDate.getTime()));
+      return selectedDate.toISOString();
+    }
 
 //@@viewOff:helpers
 
@@ -79,13 +131,15 @@
 **/
 function main(dtoIn={}) {
 
+  console.log('start');
   //validace vstupu
   if(!validate(dtoIn))
   {
+    console.log('validace neuspesna');
     return;
   }
-
   
+  console.log('validace uspesna zacinam generovat seznam');
   dtoIn = {
     count: 50,
     age: {
@@ -94,22 +148,17 @@ function main(dtoIn={}) {
     }
   };
   
-
+  var dtoOut = [];
   //vytvoreni seznamu osob (iterace podle count)
   for(var i = 0; i < dtoIn.count; i++){
     let person = getRandomPerson();
-    let personWithDetails = new Person(dtoIn.age.min, dtoIn.age.max, persons.gender)
+    person.generateDetails(dtoIn.age.min, dtoIn.age.max);
+    dtoOut.push(person);
+    console.log(i);
   }
 
-  //getRandomPerson a pak construktor te tridy
-  
-
-
+  console.log('seznam vytvoren, hotovo');
   //zapsani seznamu osob
-
-
-
-  //console.log('test');
 }
 //@@viewOff:main
 
@@ -133,3 +182,5 @@ class Person {
   this.surname = surname;
   }
 }
+
+main();
