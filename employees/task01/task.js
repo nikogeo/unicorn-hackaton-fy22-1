@@ -34,12 +34,13 @@ const LIST_LENGTH = 12;
    * @return {bool} true, false
   **/
   function validate(dtoIn){
-    if(dtoIn == undefined || null)
-    {
-      throw 'Incorrect request format';
-    }
+    // if(dtoIn == undefined || null)
+    // {
+    //   throw 'Incorrect request format';
+    // }
 
 
+    //TODO: tady doplnit
     return true;
   }
 
@@ -136,27 +137,24 @@ const LIST_LENGTH = 12;
  * @return {array} output data
 **/
 function main(dtoIn={}) {
-
-//test zmena
-dtoIn = null;
-
   console.log('start');
   //validace vstupu
   if(!validate(dtoIn))
   {
-  
     console.log('validace neuspesna');
     return;
   }
   
   console.log('validace uspesna zacinam generovat seznam');
-  // dtoIn = {
-  //   count: 50,
-  //   age: {
-  //     min: 18, 
-  //     max: 55
-  //   }
-  // };
+  
+  //TODO: tady odebrat
+  dtoIn = {
+    count: 50,
+    age: {
+      min: 18, 
+      max: 55
+    }
+  };
   
   var dtoOut = [];
   //vytvoreni seznamu osob (iterace podle count)
@@ -169,6 +167,7 @@ dtoIn = null;
 
   console.log('seznam vytvoren, hotovo');
   //zapsani seznamu osob
+  return dtoOut;
 }
 //@@viewOff:main
 
