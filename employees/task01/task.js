@@ -90,13 +90,7 @@ function getRandom(min, max) {
    * @return {bool} true, false
   **/
 function validate(dtoIn) {
-  // if(dtoIn == undefined || null)
-  // {
-  //   throw 'Incorrect request format';
-  // }
-
-  //test
-
+ 
   if (isNan(dtoIn[count])) {
     throw "count není číslo";
   } else if (dtoIn[count] <= 0 && dtoIn[count] > 1000) {
