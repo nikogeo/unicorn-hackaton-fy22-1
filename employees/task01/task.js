@@ -97,7 +97,19 @@ function validate(dtoIn) {
 
   //test
 
-  //TODO: tady doplnit
+  if (isNan(dtoIn[count])) {
+    throw "count není číslo";
+  } else if (dtoIn[count] <= 0 && dtoIn[count] > 1000) {
+    throw "count není v platném rozmezí (1-1000)";
+  } else if (isNan(dtoIn[(age, min)])) {
+    throw "Minimální věk není číslo";
+  } else if (dtoIn[(age, min)] < 18) {
+    throw "Minimální věk není platný (menší než 18)";
+  } else if (isNan(dtoIn[(age, max)])) {
+    throw "Maximální věk není číslo";
+  } else (dtoIn[(age, max)] > 70) {
+    throw "Maximální věk není platný (více než 70let)";
+  }
   return true;
 }
 
@@ -193,15 +205,6 @@ function main(dtoIn = {}) {
   }
 
   console.log("validace uspesna zacinam generovat seznam");
-
-  //TODO: tady odebrat
-  dtoIn = {
-    count: 50,
-    age: {
-      min: 18,
-      max: 55,
-    },
-  };
 
   var dtoOut = [];
   //vytvoreni seznamu osob (iterace podle count)
