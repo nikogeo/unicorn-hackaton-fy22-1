@@ -118,9 +118,16 @@ const LIST_LENGTH = 12;
       var startDate = new Date();
       startDate.setFullYear( startDate.getFullYear() - ageMax);
   
-      var selectedDate = new Date(startDate.getTime() + Math.random() * (endDate.getTime() - endDate.getTime()));
+      var selectedDate = getRandomDate(startDate, endDate);
+      //var selectedDate = new Date(startDate.getTime() + Math.random() * (endDate.getTime() - endDate.getTime()));
       return selectedDate.toISOString();
     }
+
+    function getRandomDate(from, to) {
+      from = from.getTime();
+      to = to.getTime();
+      return new Date(from + Math.random() * (to - from));
+  }
 
 //@@viewOff:helpers
 
