@@ -13,13 +13,17 @@ function compare(a, b) {
 }
 
 function validate(dtoIn) {
-    // if(dtoIn == undefined || null)
-    // {
-    //   throw 'Incorrect request format';
-    // }
-
-
-    //TODO: tady doplnit
+    for (var i = 0; i < dtoIn.length; i++) {
+        if (dtoIn[i].gender != "male" && dtoIn[i].gender != "female") {
+            throw 'Chybne zadane pohlavi.'
+        } else if (dtoIn[i].workload == undefined || dtoIn[i].workload == null || typeof dtoIn[i].workload != "number" && workload != 10 && workload != 20 && workload != 30 && workload != 40  ) {
+            throw "chybne definovany pozadavek: workload"
+        } else if (dtoIn[i].name == undefined || dtoIn[i].name == null || typeof dtoIn[i].name != "string") {
+            throw "chybne definovany pozadavek: name"
+        } else if (dtoIn[i].surname == undefined || dtoIn[i].surname == null || typeof dtoIn[i].surname != "string") {
+            throw "chybne definovany pozadavek: surname"
+        }
+    }
     return true;
 }
 
