@@ -12,16 +12,18 @@ function compare( a, b ) {
     return 0;
   }  
 
-function validate(dtoIn) {
-    // if(dtoIn == undefined || null)
-    // {
-    //   throw 'Incorrect request format';
-    // }
-
-
-    //TODO: tady doplnit
-    return true;
-}
+  function validate(dtoIn) {
+    if (dtoIn.gender != "male" || dtoIn.gender != "female"){
+      throw 'Chybne zadane pohlavi.'
+    } else if (dtoIn.workload == undefined || dtoIn.workload == null || typeof dtoIn.workload != "number") {
+      throw "chybne definovany pozadavek: workload"
+    } else if (dtoIn.name == undefined || dtoIn.name == null || typeof dtoIn.name != "string"){
+      throw "chybne definovany pozadavek: name"
+    } else if (dtoIn.surname == undefined || dtoIn.surname == null || typeof dtoIn.surname != "string"){
+      throw "chybne definovany pozadavek: surname"
+    }
+   return true;
+  }
 
 function pieChartDataGeneration(dtoIn, i, workload10, workload20, workload30, workload40) {
     switch (dtoIn[i].workload) {
