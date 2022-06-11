@@ -90,20 +90,33 @@ function getRandom(min, max) {
    * @return {bool} true, false
   **/
 function validate(dtoIn) {
- 
-  if (isNan(dtoIn[count])) {
+  if (dtoIn == undefined || dtoIn == null) {
+    throw "chybne definovany pozadavek";
+  } else if (
+    dtoIn.count == undefined ||
+    dtoIn.count == null ||
+    typeof dtoIn.count != "number"
+  ) {
     throw "count není číslo";
-  } else if (dtoIn[count] <= 0 && dtoIn[count] > 1000) {
+  } else if (dtoIn["count"] <= 0 && dtoIn["count"] > 1000) {
     throw "count není v platném rozmezí (1-1000)";
-  } else if (isNan(dtoIn[(age, min)])) {
+  } else if (
+    dtoIn[("age", "min")] == undefined ||
+    dtoIn[("age", "min")] == null ||
+    typeof dtoIn[("age", "min")] != "number"
+  ) {
     throw "Minimální věk není číslo";
   } else if (dtoIn[(age, min)] < 18) {
     throw "Minimální věk není platný (menší než 18)";
-  } else if (isNan(dtoIn[(age, max)])) {
+  } else if (
+    dtoIn[(age, max)] == undefined ||
+    dtoIn[(age, max)] == null ||
+    typeof dtoIn[(age, max)] != "number"
+  ) {
     throw "Maximální věk není číslo";
   } else if (dtoIn[(age, max)] > 70) {
     throw "Maximální věk není platný (více než 70let)";
-  };
+  }
 }
 
 /**
@@ -155,29 +168,29 @@ function identifyMaleFemale() {
   return Math.random() < 0.5;
 }
 
-   /**
-   * vrati birthdate podle definovaneho veku
-   * @param {number} ageMin min value
-   * @param {number} ageMax max value
-   * @return {text} datum ve formátu ISO Date-Time YYYY-MM-DDTHH:MM:SSZ (např. 1981-10-28T23:00:00.000Z)
-  **/
-    function getRandomBirthdate(ageMin, ageMax) {
-      var endDate = new Date();
-      endDate.setFullYear( endDate.getFullYear() - ageMin);
-  
-      var startDate = new Date();
-      startDate.setFullYear( startDate.getFullYear() - ageMax);
-  
-      var selectedDate = getRandomDate(startDate, endDate);
-      //var selectedDate = new Date(startDate.getTime() + Math.random() * (endDate.getTime() - endDate.getTime()));
-      return selectedDate.toISOString();
-    }
+/**
+ * vrati birthdate podle definovaneho veku
+ * @param {number} ageMin min value
+ * @param {number} ageMax max value
+ * @return {text} datum ve formátu ISO Date-Time YYYY-MM-DDTHH:MM:SSZ (např. 1981-10-28T23:00:00.000Z)
+ **/
+function getRandomBirthdate(ageMin, ageMax) {
+  var endDate = new Date();
+  endDate.setFullYear(endDate.getFullYear() - ageMin);
 
-    function getRandomDate(from, to) {
-      from = from.getTime();
-      to = to.getTime();
-      return new Date(from + Math.random() * (to - from));
-  }
+  var startDate = new Date();
+  startDate.setFullYear(startDate.getFullYear() - ageMax);
+
+  var selectedDate = getRandomDate(startDate, endDate);
+  //var selectedDate = new Date(startDate.getTime() + Math.random() * (endDate.getTime() - endDate.getTime()));
+  return selectedDate.toISOString();
+}
+
+function getRandomDate(from, to) {
+  from = from.getTime();
+  to = to.getTime();
+  return new Date(from + Math.random() * (to - from));
+}
 
 //@@viewOff:helpers
 
