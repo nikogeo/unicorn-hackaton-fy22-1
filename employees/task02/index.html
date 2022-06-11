@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1">
+  <title>BSDE - Employees - Task 02</title>
+
+  <script>
+    if (!location.href.match(/^(about:|file:)/)) {
+      var bplCookie = document.cookie.match(/(^|;\s*)uu\.app\.bpl=([^;]+)/);
+      var bplSegmentCount = (bplCookie ? Number(bplCookie[2]) : null);
+      if (typeof bplSegmentCount !== "number" || isNaN(bplSegmentCount) || bplSegmentCount < 0) bplSegmentCount = 2;
+      var appBaseUrlPath = (location.pathname.split(/\//).slice(0,1+bplSegmentCount).join("/")+"/").replace(/\/+/g,"/").replace(/"/g,"");
+      var appAssetsRelativeUrlPath = "public/0.0.0/";
+      document.write('<base href="' + appBaseUrlPath + appAssetsRelativeUrlPath + '" data-uu-app-base="' + appBaseUrlPath + '" data-uu-app-assets-base="' + appAssetsRelativeUrlPath + '">');
+    }
+  </script>
+
+  <link type="text/css" rel="stylesheet"
+        href="https://cdn.plus4u.net/libs/materialdesignicons/2.0.46/css/materialdesignicons.min.css">
+
+  <script src="https://cdn.plus4u.net/libs/systemjs/0.19.47/system.js"></script>
+
+  <script>
+    SystemJS.config({
+      "paths": {
+        "systemjs": "https://cdn.plus4u.net/libs/systemjs/0.19.47/system.js",
+        "react": "https://cdn.plus4u.net/libs/react/16.13.1/react.min.js",
+        "react-dom": "https://cdn.plus4u.net/libs/react-dom/16.13.1/react-dom.min.js",
+        "create-react-class": "https://cdn.plus4u.net/libs/create-react-class/15.6.3/create-react-class.min.js",
+        "prop-types": "https://cdn.plus4u.net/libs/prop-types/15.7.2/prop-types.min.js",
+
+        "uu5g04": "https://cdn.plus4u.net/uu-uu5g04/1.0.0/uu5g04.min.js",
+        "uu5g04-bricks": "https://cdn.plus4u.net/uu-uu5g04/1.0.0/uu5g04-bricks.min.js",
+        "uu5g04-hooks": "https://cdn.plus4u.net/uu-uu5g04/1.0.0/uu5g04-hooks.min.js",
+        "uu5g04-forms": "https://cdn.plus4u.net/uu-uu5g04/1.0.0/uu5g04-forms.min.js",
+        "uu5g04-block-layout": "https://cdn.plus4u.net/uu-uu5g04/1.0.0/uu5g04-block-layout.min.js",
+
+        "uu5codekitg01": "https://cdn.plus4u.net/uu-uu5codekitg01/1.0.0/uu5codekitg01.min.js"
+      }
+    });
+  </script>
+
+</head>
+<body>
+
+<div id="task"></div>
+
+<script src="./../core/internal.js"></script>
+<script src="./task.js"></script>
+<script src="https://cdn.plus4u.net/uu-appg01-template/1.0.0/in-browser-transpilation.min.js"></script>
+<script type="text/babel">
+  import UU5 from "uu5g04";
+  import "uu5g04-bricks";
+  import "uu5codekitg01";
+  import {createVisualComponent, useEffect, useState, useRef } from "uu5g04-hooks";
+
+  const Lsi = {
+    header: {cs: "Úkol 02", en: "Task 02"},
+    copyBtn: {cs: "Kopíruj", en: "Copy"},
+    resetBtn: {cs: "Reset", en: "Reset"},
+    runBtn: {cs: "Spustit", en: "Run"},
+    output: {cs: "Výstup", en: "Output"},
+    input: {cs: "Vstup", en: "Input"},
+    data: {cs: "Data", en: "Data"},
+    sourceCode: {cs: "Zdrojový kód", en: "Source code"},
+    stats: {cs: "Popisná statistika", en: "Descriptive statistics"},
+    noData: {cs: "Žádná data", en: "No data"},
+    headerRow: {
+      indicator: {cs: "Ukazatel", en: "Indicator"},
+      value: {cs: "Hodnota", en: "Value"}
+    },
+    rows: {
+      total: {cs: "Celkový počet", en: "Total records"},
+      workload10: {cs: "Počet zaměstnanců s úvazkem 10 h", en: "Employees with workload 10 h"},
+      workload20: {cs: "Počet zaměstnanců s úvazkem 20 h", en: "Employees with workload 20 h"},
+      workload30: {cs: "Počet zaměstnanců s úvazkem 30 h", en: "Employees with workload 30 h"},
+      workload40: {cs: "Počet zaměstnanců s úvazkem 40 h", en: "Employees with workload 40 h"},
+      averageAge: {cs: "Průměrný věk", en: "Average age"},
+      minAge: {cs: "Nejmladší", en: "The youngest"},
+      maxAge: {cs: "Nejstarší", en: "The oldest"},
+      medianAge: {cs: "Medián věku", en: "Median age"},
+      medianWorkload: {cs: "Medián úvazku", en: "Median workload"},
+      averageWomenWorkload: {cs: "Průměrný úvazek žen", en: "Average women workload"}
+    }
+  };
+
+  const DEFAULT_DTO_IN = [
+    {
+      gender: "male",
+      birthdate: "2000-08-07T00:00:00.000Z",
+      name: "Jan",
+      surname: "Novák",
+      workload: 40
+    },
+    {
+      gender: "female",
+      birthdate: "2000-01-03T00:00:00.000Z",
+      name: "Jana",
+      surname: "Nováková",
+      workload: 20
+    }
+  ];
+
+  //@@viewOn:internal
+  const CodeViewer = createVisualComponent({
+    //@@viewOn:propTypes
+    propTypes: {
+      showCopyButton: UU5.PropTypes.bool,
+    },
+    //@@viewOff:propTypes
+
+    //@@viewOn:defaultProps
+    defaultProps: {
+      showCopyButton: true,
+    },
+    //@@viewOff:defaultProps
+
+    render(props) {
+
+      //@@viewOn:hooks
+      const codeViewer = useRef();
+      //@@viewOn:hooks
+
+      //@@viewOn:private
+      //@@viewOn:private
+
+      //@@viewOn:render
+      return (
+        <UU5.Bricks.Div className="center">
+          <UU5.CodeKit.CodeViewer ref_={codeViewer} codeStyle="javascript" showLineNumbers={false}>
+            {props.content || props.children}
+          </UU5.CodeKit.CodeViewer>
+          <UU5.Bricks.Button 
+            bgStyle="outline"
+            content={<UU5.Bricks.Lsi lsi={Lsi.copyBtn} />}
+            borderRadius="32px"
+            colorSchema="primary"
+            size="l"
+            style={{margin:"24px 0 0 0"}}
+            onClick={()=> codeViewer.current.getInput().copyToClipboard()}
+            hidden={!props.showCopyButton}
+          />
+        </UU5.Bricks.Div>
+      )
+      //@@viewOff:render
+    }
+  });
+
+  const DtoInInput = createVisualComponent({
+    //@@viewOn:propTypes
+    propTypes: {
+      setDtoIn: UU5.PropTypes.func,
+    },
+    //@@viewOff:propTypes
+
+    //@@viewOn:defaultProps
+    defaultProps: {
+      setDtoIn: ()=>undefined,
+    },
+    //@@viewOff:defaultProps
+
+    render(props) {
+
+      //@@viewOn:hooks
+      const codeEditor = useRef();
+      //@@viewOn:hooks
+
+      //@@viewOn:private
+      //@@viewOn:private
+
+      //@@viewOn:render
+      return (
+        <UU5.Bricks.Div className="center">
+          <UU5.CodeKit.JsonEditor 
+            ref_={codeEditor} 
+            format="pretty"
+            valueFormat="object"
+            value={DEFAULT_DTO_IN}
+            controlled={false}
+          >
+            {props.content || props.children}
+          </UU5.CodeKit.JsonEditor>
+          <UU5.Bricks.Button 
+            bgStyle="transparent"
+            borderRadius="32px"
+            size="xl"
+            style={{margin:"24px 0 0 0", marginRight: "8px"}}
+            onClick={()=> {
+              props.setDtoIn({});
+              codeEditor.current.setValue(JSON.stringify(DEFAULT_DTO_IN));
+              codeEditor.current.focus();
+            }}
+          >
+            <UU5.Bricks.Lsi lsi={Lsi.resetBtn} />
+          </UU5.Bricks.Button>
+          <UU5.Bricks.Button 
+            bgStyle="filled"
+            borderRadius="32px"
+            colorSchema="success"
+            size="xl"
+            style={{margin:"24px 0 0 0"}}
+            onClick={()=> props.setDtoIn(codeEditor.current.getValue())}
+          >
+            <UU5.Bricks.Icon icon="mdi-play-circle" /><UU5.Bricks.Lsi lsi={Lsi.runBtn} />
+          </UU5.Bricks.Button>
+        </UU5.Bricks.Div>
+      )
+      //@@viewOff:render
+    }
+  });
+
+  const DescriptiveStatistics = createVisualComponent({
+    //@@viewOn:propTypes
+    propTypes: {
+      data: UU5.PropTypes.object,
+    },
+    //@@viewOff:propTypes
+
+    //@@viewOn:defaultProps
+    //@@viewOff:defaultProps
+
+    render({data}) {
+
+      //@@viewOn:hooks
+      //@@viewOn:hooks
+
+      //@@viewOn:private
+      const rows = Object.keys(data)
+        .filter(key => key !== "sortedByWorkload")
+        .map(key => [{lsi: Lsi.rows[key]}, <div className="right">{data[key].toString()}</div>]);
+      //@@viewOn:private
+
+      //@@viewOn:render
+      return (
+        <UU5.Bricks.DataTable 
+          striped
+          condensed
+          hover
+          headerRow={[{lsi: Lsi.headerRow.indicator}, {lsi: Lsi.headerRow.value}]}
+          rows={rows}
+        />
+      )
+      //@@viewOff:render
+    }
+  });
+
+  function executeMain(dtoIn, setDtoOut) {
+    if (!dtoIn || (dtoIn && Object.keys(dtoIn).length === 0)) {
+      setDtoOut({});
+      return;
+    }
+    setDtoOut(main(dtoIn));
+  }
+  //@@viewOff:internal
+
+  //@@viewOn:page
+  const Page = createVisualComponent({
+
+    render(props) {
+      //@@viewOn:hooks
+      const [dtoOut, setDtoOut] = useState({});
+      const [dtoIn, setDtoIn] = useState({});
+      useEffect(()=>executeMain(dtoIn, setDtoOut), [dtoIn]);
+      //@@viewOn:hooks
+
+      //@@viewOn:private
+      //@@viewOn:private
+
+      //@@viewOn:render
+      return (
+        <UU5.Bricks.Container header={<UU5.Bricks.Lsi lsi={Lsi.header} />} level={2}>
+          <UU5.Bricks.Div className="right" style={{marginBottom: "8px"}}>
+            <UU5.Bricks.LanguageSelector displayedLanguages={["cs", "en"]}/>
+          </UU5.Bricks.Div>
+          <UU5.Bricks.Row>
+            <UU5.Bricks.Column colWidth="xs12 xl6">
+              <UU5.Bricks.Card elevation={1} borderRadius="16px" className="uu5-common-padding-m" header={<UU5.Bricks.Lsi lsi={Lsi.input} />}>
+                <DtoInInput setDtoIn={setDtoIn} />
+              </UU5.Bricks.Card>
+            </UU5.Bricks.Column>
+            <UU5.Bricks.Column colWidth="xs12 xl6">
+              <UU5.Bricks.Card elevation={1} borderRadius="16px" className="uu5-common-padding-m" header={<UU5.Bricks.Lsi lsi={Lsi.output} />}>
+                {dtoIn && dtoIn.length > 0 && dtoOut && Object.keys(dtoOut).length > 0 ? (
+                <UU5.Bricks.Accordion 
+                  iconExpanded="mdi-chevron-up" 
+                  iconCollapsed="mdi-chevron-down" 
+                  size="l"
+                  onClickNotCollapseOthers
+                >
+                  <UU5.Bricks.Panel 
+                    header={<UU5.Bricks.Lsi lsi={Lsi.stats} />} 
+                    bgStyleHeader="transparent" 
+                    elevation={1}
+                    colorSchemaHeader="blue"
+                    borderRadius="16px 16px 0 0"
+                    expanded
+                  >
+                    <DescriptiveStatistics data={dtoOut} />
+                  </UU5.Bricks.Panel>
+                  <UU5.Bricks.Panel 
+                    header={<UU5.Bricks.Lsi lsi={Lsi.data} />}
+                    bgStyleHeader="transparent" 
+                    elevation={1}
+                    colorSchemaHeader="blue"
+                  >
+                    <CodeViewer content={JSON.stringify(dtoOut.sortedByWorkload || [])} />
+                  </UU5.Bricks.Panel>
+                  <UU5.Bricks.Panel 
+                    header={<UU5.Bricks.Lsi lsi={Lsi.sourceCode} />}
+                    bgStyleHeader="transparent" 
+                    elevation={1}
+                    colorSchemaHeader="blue"
+                    borderRadius="0 0 16px 16px"
+                  >
+                    <CodeViewer content={main.toString()} showCopyButton={false} />
+                  </UU5.Bricks.Panel>
+                </UU5.Bricks.Accordion>
+                ) : <UU5.Bricks.Lsi lsi={Lsi.noData} />}
+              </UU5.Bricks.Card>
+              </UU5.Bricks.Column>
+            </UU5.Bricks.Row>
+        </UU5.Bricks.Container>
+      )
+      //@@viewOn:render
+    }
+
+  });
+  //@@viewOff:page
+
+  UU5.Common.DOM.render(<Page/>, document.getElementById('task'));
+</script>
+</body>
+</html>
