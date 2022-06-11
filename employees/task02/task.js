@@ -19,19 +19,7 @@ function compare(a, b) {
  * @return {bool} true, false
  **/
 function validate(dtoIn) {
-  if (isNan(dtoIn[count])) {
-    throw "count není číslo";
-  } else if (dtoIn[count] <= 0 && dtoIn[count] > 1000) {
-    throw "count není v platném rozmezí (1-1000)";
-  } else if (isNan(dtoIn[(age, min)])) {
-    throw "Minimální věk není číslo";
-  } else if (dtoIn[(age, min)] < 18) {
-    throw "Minimální věk není platný (menší než 18)";
-  } else if (isNan(dtoIn[(age, max)])) {
-    throw "Maximální věk není číslo";
-  } else if (dtoIn[(age, max)] > 70) {
-    throw "Maximální věk není platný (více než 70let)";
-  }
+ return true;
 }
 
 function generateWorkloadDetails(dtoIn, i, dtoOut) {

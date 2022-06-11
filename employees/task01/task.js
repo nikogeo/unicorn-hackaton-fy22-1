@@ -89,35 +89,44 @@ function getRandom(min, max) {
   }
    * @return {bool} true, false
   **/
-function validate(dtoIn) {
-  if (dtoIn == undefined || dtoIn == null) {
-    throw "chybne definovany pozadavek";
-  } else if (
-    dtoIn.count == undefined ||
-    dtoIn.count == null ||
-    typeof dtoIn.count != "number"
-  ) {
-    throw "count není číslo";
-  } else if (dtoIn["count"] <= 0 && dtoIn["count"] > 1000) {
-    throw "count není v platném rozmezí (1-1000)";
-  } else if (
-    dtoIn[("age", "min")] == undefined ||
-    dtoIn[("age", "min")] == null ||
-    typeof dtoIn[("age", "min")] != "number"
-  ) {
-    throw "Minimální věk není číslo";
-  } else if (dtoIn[(age, min)] < 18) {
-    throw "Minimální věk není platný (menší než 18)";
-  } else if (
-    dtoIn[(age, max)] == undefined ||
-    dtoIn[(age, max)] == null ||
-    typeof dtoIn[(age, max)] != "number"
-  ) {
-    throw "Maximální věk není číslo";
-  } else if (dtoIn[(age, max)] > 70) {
-    throw "Maximální věk není platný (více než 70let)";
+  function validate(dtoIn) {
+    if (dtoIn == undefined || dtoIn == null) {
+      throw "chybne definovany pozadavek";
+    } else if (
+      dtoIn.count == undefined ||
+      dtoIn.count == null ||
+      typeof dtoIn.count != "number"
+    ) {
+      throw "count není číslo";
+    } else if (dtoIn["count"] <= 0 && dtoIn["count"] > 1000) {
+      throw "count není v platném rozmezí (1-1000)";
+    } else if (
+      dtoIn.age == undefined ||
+      dtoIn.age == null
+     ) {
+      throw "age not defined";
+    }
+    if (
+      dtoIn.age.min == undefined ||
+      dtoIn.age.min == null ||
+      typeof dtoIn.age.min != "number"
+    ) {
+      throw "Minimální věk není číslo";
+    } else if (dtoIn.age.min < 18) {
+      throw "Minimální věk není platný (menší než 18)";
+    } else if (
+      dtoIn.age.max == undefined ||
+      dtoIn.age.max == null ||
+      typeof dtoIn.age.max != "number"
+    ) {
+      throw "Maximální věk není číslo";
+    } else if (dtoIn.age.max > 70) {
+      throw "Maximální věk není platný (více než 70let)";
+    }
+
+    return true;
   }
-}
+
 
 /**
  * vrati workload, hodnoty 10, 20, 30 nebo 40
@@ -206,7 +215,7 @@ function getRandomDate(from, to) {
   }
  * @return {array} output data
 **/
-function main(dtoIn = {}) {
+function main(dtoIn) {
   console.log("start");
   //validace vstupu
   if (!validate(dtoIn)) {
@@ -251,5 +260,3 @@ class Person {
     this.surname = surname;
   }
 }
-
-main();
